@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Data Diri Nafila</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: #f4f6f8;
+            color: #333;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            color: #2c3e50;
+        }
+
+        .grid {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .card {
+            background: #ffffff;
+            border-radius: 10px;
+            padding: 24px;
+            flex: 1;
+            min-width: 300px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .card h2 {
+            font-size: 1.3rem;
+            margin-bottom: 16px;
+            color: #34495e;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 8px;
+        }
+
+        .profile-img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 15px;
+            border: 3px solid #3498db;
+        }
+
+        ul {
+            list-style-type: none;
+        }
+
+        ul li {
+            margin-bottom: 12px;
+            line-height: 1.5;
+        }
+
+        ul li strong {
+            color: #555;
+        }
+
+        .btn-back {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 18px;
+            background-color: #3498db;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: bold;
+            transition: background 0.2s;
+        }
+
+        .btn-back:hover {
+            background-color: #2980b9;
+        }
+
+        .warning-box {
+            margin-top: 25px;
+            background-color: #fce4e4;
+            border-left: 5px solid #e74c3c;
+            padding: 15px;
+            border-radius: 6px;
+            color: #c0392b;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Profil Nafila</h1>
+
+        <div class="grid">
+            <!-- Kolom Data Diri -->
+            <div class="card">
+                <h2>Data diri</h2>
+                
+                <!-- Foto / Avatar -->
+                <img src="Pictures/donwlod(6)" alt="Foto Profil" class="profile-img">
+
+                <ul>
+                    <li><strong>Nama Lengkap:</strong> Nafila Rizkiana Atmam</li>
+                    <li><strong>Nama Panggilan:</strong> Nafila</li>
+                    <li><strong>Kelas & Absen:</strong> XI PPLG / 24 </li>
+                    <li><strong>Tempat, Tanggal Lahir:</strong> Semarang, 4 Mei 2009</li>
+                    <li><strong>Kota Asal:</strong> Semarang</li>
+                </ul>
+            </div>
+
+            <!-- Kolom Profil -->
+            <div class="card">
+                <h2>Profil</h2>
+                <ul>
+                    <li>
+                        <strong>Deskripsi singkat diri:</strong><br>
+                        Saya adalah siswi SMK jurusan Pengembangan Perangkat Lunak dan GIM, yang sekarang sudah kelas 12 dan akan mengikuti TKA. 
+                    <li>
+                        <strong>Hobi:</strong><br>
+                        Membaca, menonton film, dan mendengarkan musik.
+                    </li>
+                    <li>
+                        <strong>Keahlian / Skill:</strong><br>
+                        HTML, CSS, PHP, Laravel dasar
+                    </li>
+                    <li>
+                        <strong>Cita-cita:</strong><br>
+                        Software Engineer
+                    </li>
+                </ul>
+            </div>
+        </div>
+</body>
+</html>
