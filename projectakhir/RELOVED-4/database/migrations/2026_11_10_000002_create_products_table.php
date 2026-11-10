@@ -10,11 +10,15 @@ return new class extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->string('code')->unique();
+            $table->string('code')->unique(); // Kode unik thrift (contoh: RLV-001)
             $table->string('name');
+            $table->foreignId('category_id')->constrained()->cascadeOnDelete();
             $table->foreignId('size_id')->constrained()->restrictOnDelete();
-            $table->decimal('price', 10, 2);
+            $table->text('description')->nullable();
+            $table->decimal('price', 12, 2);
             $table->unsignedInteger('stock')->default(1);
+            $table->string('image')->nullable();
+            $table->enum('status', ['available', 'sold'])->default('available');
             $table->timestamps();
         });
     }
