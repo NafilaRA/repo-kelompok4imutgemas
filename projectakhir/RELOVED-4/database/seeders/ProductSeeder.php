@@ -24,7 +24,7 @@ class ProductSeeder extends Seeder
             'price' => 75000,
             'original_price' => 90000,
             'stock' => 5,
-            'image' => 'images/products/RLV-001.jpg',
+            'image' => 'images/products/RLV-001.jpeg',
             'badge' => 'Like New',
             'status' => 'available'
         ]);
@@ -39,7 +39,7 @@ class ProductSeeder extends Seeder
             'price' => 45000,
             'original_price' => 55000,
             'stock' => 9,
-            'image' => 'images/products/RLV-002.jpg',
+            'image' => 'images/products/RLV-002.jpeg',
             'badge' => 'Like New',
             'status' => 'available'
         ]);
@@ -54,7 +54,7 @@ class ProductSeeder extends Seeder
             'price' => 60000,
             'original_price' => 75000,
             'stock' => 2,
-            'image' => 'images/products/RLV-003.jpg',
+            'image' => 'images/products/RLV-003.jpeg',
             'badge' => 'Rare Find',
             'status' => 'available'
         ]);
@@ -69,7 +69,7 @@ class ProductSeeder extends Seeder
             'price' => 40000,
             'original_price' => 50000,
             'stock' => 5,
-            'image' => 'images/products/RLV-004.jpg',
+            'image' => 'images/products/RLV-004.jpeg',
             'badge' => 'Like New',
             'status' => 'available'
         ]);
@@ -85,7 +85,7 @@ class ProductSeeder extends Seeder
             'price' => 65000,
             'original_price' => 80000,
             'stock' => 8,
-            'image' => 'images/products/RLV-005.jpg',
+            'image' => 'images/products/RLV-005.jpeg',
             'badge' => 'Like New',
             'status' => 'available'
         ]);
@@ -100,7 +100,7 @@ class ProductSeeder extends Seeder
             'price' => 70000,
             'original_price' => 85000,
             'stock' => 4,
-            'image' => 'images/products/RLV-006.jpg',
+            'image' => 'images/products/RLV-006.jpeg',
             'badge' => 'Like New',
             'status' => 'available'
         ]);
@@ -115,7 +115,7 @@ class ProductSeeder extends Seeder
             'price' => 80000,
             'original_price' => 95000,
             'stock' => 4,
-            'image' => 'images/products/RLV-007.jpg',
+            'image' => 'images/products/RLV-007.jpeg',
             'badge' => 'Rare Find',
             'status' => 'available'
         ]);
@@ -131,7 +131,7 @@ class ProductSeeder extends Seeder
             'price' => 55000,
             'original_price' => 65000,
             'stock' => 4,
-            'image' => 'images/products/RLV-008.jpg',
+            'image' => 'images/products/RLV-008.jpeg',
             'badge' => 'Like New',
             'status' => 'available'
         ]);
@@ -146,7 +146,7 @@ class ProductSeeder extends Seeder
             'price' => 65000,
             'original_price' => 75000,
             'stock' => 2,
-            'image' => 'images/products/RLV-009.jpg',
+            'image' => 'images/products/RLV-009.jpeg',
             'badge' => 'Like New',
             'status' => 'available'
         ]);
@@ -161,7 +161,7 @@ class ProductSeeder extends Seeder
             'price' => 75000,
             'original_price' => 85000,
             'stock' => 3,
-            'image' => 'images/products/RLV-0010.jpg',
+            'image' => 'images/products/RLV-0010.jpeg',
             'badge' => 'Like New',
             'status' => 'available'
         ]);
@@ -177,7 +177,7 @@ class ProductSeeder extends Seeder
             'price' => 30000,
             'original_price' => 35000,
             'stock' => 6,
-            'image' => 'images/products/RLV-0011.jpg',
+            'image' => 'images/products/RLV-0011.jpeg',
             'badge' => 'Like New',
             'status' => 'available'
         ]);
@@ -192,7 +192,7 @@ class ProductSeeder extends Seeder
             'price' => 35000,
             'original_price' => 40000,
             'stock' => 5,
-            'image' => 'images/products/RLV-0012.jpg',
+            'image' => 'images/products/RLV-0012.jpeg',
             'badge' => 'Like New',
             'status' => 'available'
         ]);
@@ -207,7 +207,7 @@ class ProductSeeder extends Seeder
             'price' => 35000,
             'original_price' => 40000,
             'stock' => 4,
-            'image' => 'images/products/RLV-0013.jpg',
+            'image' => 'images/products/RLV-0013.jpeg',
             'badge' => 'Like New',
             'status' => 'available'
         ]);
@@ -223,7 +223,7 @@ class ProductSeeder extends Seeder
             'price' => 95000,
             'original_price' => 120000,
             'stock' => 8,
-            'image' => 'images/products/RLV-0014.jpg',
+            'image' => 'images/products/RLV-0014.jpeg',
             'badge' => 'Like New',
             'status' => 'available'
         ]);
@@ -238,7 +238,7 @@ class ProductSeeder extends Seeder
             'price' => 85000,
             'original_price' => 95000,
             'stock' => 4,
-            'image' => 'images/products/RLV-0015.jpg',
+            'image' => 'images/products/RLV-0015.jpeg',
             'badge' => 'Like New',
             'status' => 'available'
         ]);
@@ -253,7 +253,7 @@ class ProductSeeder extends Seeder
             'price' => 90000,
             'original_price' => 100000,
             'stock' => 9,
-            'image' => 'images/products/RLV-0016.jpg',
+            'image' => 'images/products/RLV-0016.jpeg',
             'badge' => 'Like New',
             'status' => 'available'
         ]);
@@ -269,7 +269,7 @@ class ProductSeeder extends Seeder
             'original_price' => 85000,
             'price' => 75000,
             'stock' => 3,
-            'image' => 'images/products/RLV-0017.jpg',
+            'image' => 'images/products/RLV-0017.jpeg',
             'badge' => 'Like New',
             'status' => 'available'
         ]);
@@ -284,7 +284,7 @@ class ProductSeeder extends Seeder
             'price' => 80000,
             'original_price' => 85000,
             'stock' => 7,
-            'image' => 'images/products/RLV-0018.jpg',
+            'image' => 'images/products/RLV-0018.jpeg',
             'badge' => 'Like New',
             'status' => 'available'
         ]);
@@ -299,7 +299,7 @@ class ProductSeeder extends Seeder
             'price' => 85000,
             'original_price' => 90000,
             'stock' => 2,
-            'image' => 'images/products/RLV-0019.jpg',
+            'image' => 'images/products/RLV-0019.jpeg',
             'badge' => 'Like New',
             'status' => 'available'
         ]);
@@ -314,7 +314,7 @@ class ProductSeeder extends Seeder
             'price' => 90000,
             'original_price' => 95000,
             'stock' => 4,
-            'image' => 'images/products/RLV-0020.jpg',
+            'image' => 'images/products/RLV-0020.jpeg',
             'badge' => 'Like New',
             'status' => 'available'
         ]);
