@@ -10,15 +10,18 @@ return new class extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->string('code')->unique(); // Kode unik thrift (contoh: RLV-001)
+            $table->string('code')->unique();
             $table->string('name');
-            $table->foreignId('category_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('size_id')->constrained()->restrictOnDelete();
+            $table->foreignId('category_id')->constrained('categories')->onDelete('cascade');
+            $table->foreignId('size_id')->constrained('sizes')->onDelete('cascade');
+            $table->string('condition')->nullable(); 
             $table->text('description')->nullable();
-            $table->decimal('price', 12, 2);
-            $table->unsignedInteger('stock')->default(1);
-            $table->string('image')->nullable();
-            $table->enum('status', ['available', 'sold'])->default('available');
+            $table->decimal('price', 10, 2);
+            $table->decimal('original_price', 10, 2)->nullable(); // Kolom harga coret
+            $table->integer('stock')->default(1);
+            $table->string('image');
+            $table->string('badge')->nullable(); // Kolom badge (Like New, Rare Find, dll)
+            $table->string('status')->default('available');
             $table->timestamps();
         });
     }
@@ -28,3 +31,4 @@ return new class extends Migration
         Schema::dropIfExists('products');
     }
 };
+   

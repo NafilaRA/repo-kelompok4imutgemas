@@ -16,13 +16,11 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        foreach (['S', 'M', 'L', 'XL', 'XXL'] as $name) {
-            Size::firstOrCreate(['name' => $name]);
-        }
-
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        $this->call([
+            CategorySeeder::class,
+            SizeSeeder::class, // (Lewati jika Anda tidak pakai tabel ukuran terpisah)
+            ProductSeeder::class,
         ]);
+
     }
 }

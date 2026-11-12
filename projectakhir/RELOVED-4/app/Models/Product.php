@@ -2,28 +2,36 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Product extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
         'code',
         'name',
+        'category_id',
         'size_id',
+        'condition',
+        'description',
         'price',
+        'original_price',
         'stock',
+        'image',
+        'badge',
+        'status',
     ];
 
-    protected function casts(): array
+    // Relasi: Produk milik satu kategori
+    public function category()
     {
-        return [
-            'price' => 'decimal:2',
-            'stock' => 'integer',
-        ];
+        return $this->belongsTo(Category::class);
     }
 
-    public function size(): BelongsTo
+    // Relasi: Produk milik satu ukuran
+    public function size()
     {
         return $this->belongsTo(Size::class);
     }
