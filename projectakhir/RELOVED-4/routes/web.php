@@ -10,3 +10,28 @@ Route::get('/', function () {
 Route::get('/', [ProductController::class, 'index'])->name('product.index');
 // Halaman detail saat produk diklik
 Route::get('/product/{code}', [ProductController::class, 'show'])->name('product.show');
+use App\Http\Controllers\AuthController;
+
+// Route Autentikasi (Login & Logout)
+Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
+Route::post('/login', [AuthController::class, 'login'])->name('login.post');
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+// Route Autentikasi (Login & Register)
+Route::get('/signup', [AuthController::class, 'showRegister'])->name('signup');
+Route::post('/signup', [AuthController::class, 'register'])->name('signup.post');
+
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+// Route Halaman Syarat & Ketentuan / Kebijakan Privasi
+Route::get('/terms', function () {
+    return view('Auth.term');
+})->name('terms');
+use App\Http\Controllers\Auth\ForgotPasswordController;
+
+// Rute Lupa Kata Sandi (OTP)
+Route::get('/lupa-password', [ForgotPasswordController::class, 'showForgotForm'])->name('password.request');
+Route::post('/lupa-password/kirim-otp', [ForgotPasswordController::class, 'sendOtp'])->name('password.otp.send');
+Route::post('/lupa-password/reset', [ForgotPasswordController::class, 'resetPassword'])->name('password.otp.update');
+// Halaman Pengaturan Akun (Hanya bisa diakses jika sudah login)
+Route::get('/profile', function () {
+    return view('account'); // Sesuaikan nama foldernya jika ditaruh di dalam subfolder, misal: view('profile.account')
+})->middleware('auth')->name('profile.index');
