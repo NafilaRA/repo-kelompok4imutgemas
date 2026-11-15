@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -103,6 +104,15 @@
                 @if(request('category'))
                     <input type="hidden" name="category" value="{{ request('category') }}">
                 @endif
+                @if(request('size'))
+                    <input type="hidden" name="size" value="{{ request('size') }}">
+                @endif
+                @if(request('color'))
+                    <input type="hidden" name="color" value="{{ request('color') }}">
+                @endif
+                @if(request('condition'))
+                    <input type="hidden" name="condition" value="{{ request('condition') }}">
+                @endif
                 <div class="relative w-full flex items-center bg-[#FEF5B8] border border-amber-200/80 rounded-full px-4 py-2.5 shadow-sm focus-within:ring-2 focus-within:ring-pink-300 transition">
                     <svg class="w-4 h-4 text-stone-500 mr-2.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35M17 11A6 6 0 115 11a6 6 0 0112 0z" />
@@ -124,6 +134,41 @@
                 </svg>
             </button>
         </div>
+
+        <!-- Active Filter Badges -->
+        @if(request('size') || request('color') || request('condition') || request('search'))
+            <div class="flex items-center gap-2 flex-wrap pt-1">
+                <span class="text-xs font-bold text-stone-500">Filter Aktif:</span>
+                
+                @if(request('size'))
+                    <a href="{{ route('product.index', request()->except('size')) }}" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-pink-100 text-pink-800 text-xs font-bold hover:bg-pink-200 transition">
+                        Size: {{ request('size') }} <span class="text-pink-600 font-extrabold ml-0.5">✕</span>
+                    </a>
+                @endif
+
+                @if(request('color'))
+                    <a href="{{ route('product.index', request()->except('color')) }}" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-100 text-amber-900 text-xs font-bold hover:bg-amber-200 transition">
+                        Warna: {{ request('color') }} <span class="text-amber-700 font-extrabold ml-0.5">✕</span>
+                    </a>
+                @endif
+
+                @if(request('condition'))
+                    <a href="{{ route('product.index', request()->except('condition')) }}" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-rose-100 text-rose-800 text-xs font-bold hover:bg-rose-200 transition">
+                        Kondisi: {{ request('condition') }} <span class="text-rose-600 font-extrabold ml-0.5">✕</span>
+                    </a>
+                @endif
+
+                @if(request('search'))
+                    <a href="{{ route('product.index', request()->except('search')) }}" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-stone-200 text-stone-800 text-xs font-bold hover:bg-stone-300 transition">
+                        Cari: "{{ request('search') }}" <span class="text-stone-600 font-extrabold ml-0.5">✕</span>
+                    </a>
+                @endif
+
+                <a href="{{ route('product.index') }}" class="text-xs font-bold text-pink-600 hover:underline ml-2">
+                    Reset Semua
+                </a>
+            </div>
+        @endif
 
         <!-- Category Pills -->
         <div class="flex items-center gap-2 overflow-x-auto no-scrollbar py-1">
@@ -186,6 +231,13 @@
                                          onerror="this.src='https://placehold.co/400x500/fce7f3/db2777?text={{ $product->code }}'"
                                          class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
                                 </a>
+                                @if(!empty($product->condition))
+                                    <div class="absolute top-2.5 left-2.5 z-10">
+                                        <span class="inline-block bg-amber-400 text-amber-950 text-[10px] font-extrabold px-2.5 py-1 rounded-full shadow-sm">
+                                            {{ $product->condition }}
+                                        </span>
+                                    </div>
+                                @endif
                             </div>
                             <div class="p-3.5 pb-2">
                                 <span class="inline-block bg-[#FADADD] text-rose-800 text-[10px] font-bold px-2.5 py-0.5 rounded-full mb-1.5">
@@ -316,7 +368,7 @@
                 <div class="mb-6">
                     <label class="block text-xs font-extrabold text-stone-800 mb-2.5">Standar Kondisi Vintage</label>
                     <div class="grid grid-cols-3 gap-2">
-                        @foreach(['Like New' => 'Like New (Tanpa jejak pakai)', '9/10 Mint' => '9/10 Mint (Warna pekat)', 'Vintage Vibe' => 'Vintage Vibe (Natural patina)'] as $condVal => $condLabel)
+                        @foreach(['Like New' => 'Like New (Tanpa jejak pakai)', 'Vintage Vibe' => 'Vintage Vibe (Natural patina)'] as $condVal => $condLabel)
                             <label class="cursor-pointer text-center p-3 rounded-2xl border border-stone-200 bg-white hover:border-pink-300 transition has-[:checked]:border-[#831843] has-[:checked]:bg-pink-50">
                                 <input type="radio" name="condition" value="{{ $condVal }}" class="sr-only" {{ request('condition') == $condVal ? 'checked' : '' }}>
                                 <span class="block text-xs font-bold text-stone-800">{{ explode('(', $condLabel)[0] }}</span>
