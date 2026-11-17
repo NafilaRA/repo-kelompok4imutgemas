@@ -33,5 +33,11 @@ Route::post('/lupa-password/kirim-otp', [ForgotPasswordController::class, 'sendO
 Route::post('/lupa-password/reset', [ForgotPasswordController::class, 'resetPassword'])->name('password.otp.update');
 // Halaman Pengaturan Akun (Hanya bisa diakses jika sudah login)
 Route::get('/profile', function () {
-    return view('account'); // Sesuaikan nama foldernya jika ditaruh di dalam subfolder, misal: view('profile.account')
-})->middleware('auth')->name('profile.index');
+    return view('profile'); // Sesuaikan nama foldernya jika ditaruh di dalam subfolder, misal: view('profile.account')
+})->middleware('auth')->name('profile');
+// Rute khusus Penjual / Admin
+Route::middleware(['auth', 'penjual'])->group(function () {
+    // Ganti dengan rute tambah/edit produk milik kalian di project Reloved
+    Route::get('/produk/tambah', [App\Http\Controllers\ProdukController::class, 'create'])->name('produk.create');
+    Route::post('/produk/simpan', [App\Http\Controllers\ProdukController::class, 'store'])->name('produk.store');
+});

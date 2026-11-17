@@ -22,13 +22,33 @@
     <header class="bg-[#FFF9FB]/90 backdrop-blur-md sticky top-0 z-40 border-b border-pink-100">
         <div class="max-w-5xl mx-auto px-4 sm:px-6 py-3.5 flex items-center justify-between">
             <div class="flex items-center gap-3">
-                <a href="{{ route('login') }}" class="w-8 h-8 rounded-full hover:bg-pink-100 flex items-center justify-center text-[#5C164E] transition">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                    </svg>
-                </a>
-                <h1 class="font-serif-title text-lg font-extrabold text-[#5C164E]">Masuk / Reloved</h1>
-            </div>
+    @php
+        $halamanSebelumnya = url()->previous();
+    @endphp
+
+    @if ($halamanSebelumnya === route('login'))
+        <a href="{{ route('login') }}" class="text-[#5C164E] hover:opacity-75 transition">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+        </a>
+    @elseif ($halamanSebelumnya === route('product.index'))
+        <a href="{{ route('product.index') }}" class="text-[#5C164E] hover:opacity-75 transition">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+        </a>
+    @else
+        <a href="{{ route('product.index') }}" class="text-[#5C164E] hover:opacity-75 transition">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+        </a>
+    @endif
+
+    <h1 class="font-serif-title text-lg font-extrabold text-[#5C164E]">Masuk Reloved</h1>
+</div>
+
 
             <div class="flex items-center gap-3">
                 <a href="{{ route('product.index') }}" title="Beranda" class="w-9 h-9 rounded-full hover:bg-pink-100 flex items-center justify-center text-[#5C164E] transition">

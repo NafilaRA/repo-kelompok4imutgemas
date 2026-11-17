@@ -28,36 +28,60 @@
         <div class="max-w-6xl mx-auto px-4 sm:px-6 py-3.5 flex items-center justify-between">
             <!-- Brand & Tagline -->
             <div class="flex items-center gap-3">
-               <!-- Pembungkus Logo (Opsi 1: Background putih logo menyatu dengan pink) -->
-            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-pink-100 to-rose-200 border border-pink-200 flex items-center justify-center shadow-sm overflow-hidden">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-pink-100 to-rose-200 border border-pink-200 flex items-center justify-center shadow-sm overflow-hidden">
                 <img src="{{ asset('images/icon/logo-reloved.jpeg') }}" 
                     alt="Logo Reloved" 
                     class="w-full h-full object-contain scale-125 mix-blend-multiply">
-            </div>
+                </div>
                 <div>
                     <div class="flex items-center gap-2">
                         <a href="{{ route('product.index') }}" class="text-lg font-extrabold text-stone-800 tracking-tight">
                             Reloved
                         </a>
-                        <span class="bg-rose-100 text-rose-600 text-[10px] font-bold px-2.5 py-0.5 rounded-full">
-                            Worn & Loved
-                        </span>
                     </div>
                     <p class="text-[11px] font-medium text-stone-400">Belanja</p>
                 </div>
             </div>
 
-            <!-- Right Icons (Wishlist & Avatar) -->
-            <div class="flex items-center gap-3">
+            <!-- Right Actions (Wishlist & Tombol Login/Sign Up / Profil Dropdown) -->
+            <div class="flex items-center gap-2.5">
+                <!-- Tombol Wishlist -->
                 <button type="button" class="w-9 h-9 rounded-full bg-white border border-pink-100 flex items-center justify-center text-stone-600 hover:text-pink-500 hover:border-pink-300 transition shadow-sm">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                     </svg>
                 </button>
-                <!-- Tombol Login & Sign Up -->
+
+                <!-- Tombol Login/Sign Up atau Profil User dengan Dropdown -->
                 <div class="flex items-center gap-1.5">
-                    <a href="{{ route('login') }}" class="px-3 py-1.5 rounded-full text-xs font-bold text-stone-700 hover:text-pink-600 hover:bg-pink-50 transition">Sign In</a>
-                    <a href="{{ route('signup') }}" class="px-3.5 py-1.5 rounded-full text-xs font-extrabold bg-[#EC4899] hover:bg-pink-600 text-white shadow-sm transition">Sign Up</a>
+                    @auth
+                        <div class="relative">
+                            <!-- Tombol Avatar / Profil -->
+                            <button type="button" onclick="toggleProfileMenu()" class="flex items-center gap-2 pl-2 focus:outline-none">
+                                <span class="text-xs font-extrabold text-stone-800 hidden sm:inline">{{ Auth::user()->name }}</span>
+                                <div class="w-8 h-8 rounded-full overflow-hidden ring-2 ring-pink-300 shadow-sm transition hover:scale-105">
+                                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed={{ Auth::user()->name }}" alt="Profile" class="w-full h-full object-cover">
+                                </div>
+                            </button>
+
+                            <!-- Dropdown Menu (Pengaturan Akun & Logout) -->
+                            <div id="profileMenu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-2xl shadow-xl border border-pink-100 py-2 z-50">
+                                <a href="{{ route('profile') }}" class="block px-4 py-2 text-xs font-bold text-stone-700 hover:bg-pink-50 hover:text-pink-600 transition">
+                                    ⚙️ Pengaturan Akun
+                                </a>
+                                <div class="border-t border-pink-50 my-1"></div>
+                                <form action="{{ route('logout') }}" method="POST">
+                                    @csrf
+                                    <button type="submit" class="w-full text-left px-4 py-2 text-xs font-bold text-rose-600 hover:bg-rose-50 transition">
+                                        🚪 Keluar (Logout)
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    @else
+                        <a href="{{ route('login') }}" class="px-3 py-1.5 rounded-full text-xs font-bold text-stone-700 hover:text-pink-600 hover:bg-pink-50 transition">Sign In</a>
+                        <a href="{{ route('signup') }}" class="px-3.5 py-1.5 rounded-full text-xs font-extrabold bg-[#EC4899] hover:bg-pink-600 text-white shadow-sm transition">Sign Up</a>
+                    @endauth
                 </div>
             </div>
         </div>
@@ -119,7 +143,7 @@
                             'XL' => 'Size XL (LD 110+)',
                         ];
                     @endphp
-                    <a href="{{ route('products.index', request()->except('size')) }}"
+                    <a href="{{ route('product.index', request()->except('size')) }}"
                        title="Hapus filter ukuran"
                        class="inline-flex items-center gap-1.5 bg-[#FADADD] hover:bg-rose-200 text-rose-800 text-[11px] font-bold px-3 py-1 rounded-full shrink-0 transition">
                         <span>📏 {{ $sizeLabels[request('size')] ?? 'Size ' . request('size') }}</span>
@@ -507,17 +531,37 @@
     </div>
 
     <!-- JavaScript Buka / Tutup Modal Filter -->
-    <script>
-        function openFilterModal() {
-            document.getElementById('filterModal').classList.remove('hidden');
-            document.body.style.overflow = 'hidden'; // Kunci scroll layar belakang
-        }
+    
+<script>
+    // Dropdown Profil
+    function toggleProfileMenu() {
+        const menu = document.getElementById('profileMenu');
 
-        function closeFilterModal() {
-            document.getElementById('filterModal').classList.add('hidden');
-            document.body.style.overflow = 'auto'; // Aktifkan lagi scroll layar
+        menu.classList.toggle('hidden');
+    }
+
+    // Menutup dropdown ketika klik di luar menu
+    document.addEventListener('click', function(event) {
+        const menu = document.getElementById('profileMenu');
+        const button = event.target.closest('[onclick="toggleProfileMenu()"]');
+
+        if (menu && !menu.contains(event.target) && !button) {
+            menu.classList.add('hidden');
         }
-    </script>
+    });
+
+    // Modal Filter
+    function openFilterModal() {
+        document.getElementById('filterModal').classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeFilterModal() {
+        document.getElementById('filterModal').classList.add('hidden');
+        document.body.style.overflow = 'auto';
+    }
+</script>
+
 
 </body>
 </html>

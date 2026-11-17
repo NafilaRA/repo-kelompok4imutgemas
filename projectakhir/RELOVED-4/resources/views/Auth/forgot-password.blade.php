@@ -299,7 +299,6 @@
                     <div id="strength-bar-1" class="h-1 flex-1 rounded-full bg-surface-variant transition-colors duration-300"></div>
                     <div id="strength-bar-2" class="h-1 flex-1 rounded-full bg-surface-variant transition-colors duration-300"></div>
                     <div id="strength-bar-3" class="h-1 flex-1 rounded-full bg-surface-variant transition-colors duration-300"></div>
-                    <div id="strength-bar-4" class="h-1 flex-1 rounded-full bg-surface-variant transition-colors duration-300"></div>
                     <span id="strength-text" class="font-label-sm text-label-sm ml-1 text-on-surface-variant">Belum diisi</span>
                 </div>
 
@@ -327,7 +326,7 @@
             <!-- Secondary Actions & Support -->
             <div class="flex flex-col items-center gap-space-md text-center pt-space-xs">
                 <!-- Helpdesk Link -->
-                <a class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-secondary-container text-on-secondary-container font-label-md text-label-md hover:bg-secondary-fixed transition-colors" href="https://wa.me/6281234567890?text=Halo%20Admin%20Reloved,%20saya%20butuh%20bantuan%20reset%20kata%20sandi" rel="noopener noreferrer" target="_blank">
+                <a class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-secondary-container text-on-secondary-container font-label-md text-label-md hover:bg-secondary-fixed transition-colors" href="https://wa.me/6285803137660?text=Halo%20Admin%20Reloved,%20saya%20butuh%20bantuan%20reset%20kata%20sandi" rel="noopener noreferrer" target="_blank">
                     <span class="material-symbols-outlined text-[18px]">chat</span>
                     <span>Masih butuh bantuan? Hubungi CS Reloved via WhatsApp</span>
                 </a>
@@ -397,7 +396,6 @@ if (newPasswordInput) {
 
         if (val.length > 0) {
             if (val.length >= 8) score++; // Minimal 8 karakter
-            if (/[A-Z]/.test(val)) score++; // Ada huruf kapital
             if (/[0-9]/.test(val)) score++; // Ada angka
             if (/[^A-Za-z0-9]/.test(val) || val.length >= 12) score++; // Ada simbol atau sangat panjang
             if (score === 0) score = 1; // Minimal 1 bar kalau sudah mulai ngetik
@@ -406,8 +404,7 @@ if (newPasswordInput) {
         const bars = [
             document.getElementById('strength-bar-1'),
             document.getElementById('strength-bar-2'),
-            document.getElementById('strength-bar-3'),
-            document.getElementById('strength-bar-4')
+            document.getElementById('strength-bar-3')
         ];
         const text = document.getElementById('strength-text');
 
@@ -439,15 +436,8 @@ if (newPasswordInput) {
             bars[0].style.backgroundColor = 'rgb(106, 20, 82)'; // Ungu khas desainmu
             bars[1].style.backgroundColor = 'rgb(106, 20, 82)';
             bars[2].style.backgroundColor = 'rgb(255, 73, 193)'; // Pink khas desainmu
-            text.textContent = 'Kekuatan: Baik';
+            text.textContent = 'Kekuatan: Sangat Kuat';
             text.style.color = 'rgb(106, 20, 82)';
-        } else if (score === 4) {
-            bars.forEach(bar => {
-                bar.classList.remove('bg-surface-variant');
-                bar.style.backgroundColor = '#2e7d32'; // Hijau (Sangat Kuat)
-            });
-            text.textContent = 'Kekuatan: Sangat Kuat ✨';
-            text.style.color = '#2e7d32';
         }
     });
 }
