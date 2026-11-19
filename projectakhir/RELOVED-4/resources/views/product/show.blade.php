@@ -81,10 +81,13 @@
 
                 <!-- Tombol Beli / Keranjang -->
                 <div class="space-y-3">
-                    <button type="button" 
-                            class="w-full bg-emerald-800 hover:bg-emerald-900 text-white font-semibold py-3 px-6 rounded-xl transition shadow-sm">
-                        + Tambah ke Keranjang
-                    </button>
+                    <form action="{{ route('cart.store', $product->id) }}" method="POST" class="w-full">
+                        @csrf
+                        <button type="submit" 
+                                class="w-full bg-[#0F4C3A] hover:bg-[#0b382a] text-white font-semibold py-3 px-6 rounded-lg transition cursor-pointer">
+                            + Tambah ke Keranjang
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>

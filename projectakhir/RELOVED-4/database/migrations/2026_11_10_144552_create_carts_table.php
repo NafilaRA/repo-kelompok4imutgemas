@@ -13,7 +13,10 @@ return new class extends Migration
     {
         Schema::create('carts', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade'); // Pembeli yang punya keranjang
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('product_id')->constrained()->onDelete('cascade');
+            $table->boolean('is_selected')->default(true);
+            $table->timestamp('reserved_until')->nullable(); // Untuk timer 15 menit
             $table->timestamps();
         });
     }

@@ -1,6 +1,7 @@
 <?php
 use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CartController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -38,6 +39,13 @@ Route::get('/profile', function () {
 // Rute khusus Penjual / Admin
 Route::middleware(['auth', 'penjual'])->group(function () {
     // Ganti dengan rute tambah/edit produk milik kalian di project Reloved
-    Route::get('/produk/tambah', [App\Http\Controllers\ProdukController::class, 'create'])->name('produk.create');
-    Route::post('/produk/simpan', [App\Http\Controllers\ProdukController::class, 'store'])->name('produk.store');
+    Route::get('/produk/tambah', [App\Http\Controllers\ProductController::class, 'create'])->name('produk.create');
+    Route::post('/produk/simpan', [App\Http\Controllers\ProductController::class, 'store'])->name('produk.store');
+});
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/keranjang', [CartController::class, 'index'])->name('cart.index');
+    Route::post('/keranjang/tambah/{product}', [CartController::class, 'store'])->name('cart.store');
+    Route::delete('/keranjang/{cart}', [CartController::class, 'destroy'])->name('cart.destroy');
+    Route::post('/keranjang/hapus-terpilih', [CartController::class, 'destroySelected'])->name('cart.destroySelected');
 });
