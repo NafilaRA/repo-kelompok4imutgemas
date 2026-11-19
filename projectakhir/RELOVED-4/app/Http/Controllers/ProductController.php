@@ -65,4 +65,12 @@ class ProductController extends Controller
 
         return view('product.index', compact('products', 'categories', 'sizes'));
     }
+
+    public function show($code)
+    {
+        // Cari produk berdasarkan kode (misal: RLV-002) atau tampilkan halaman detail
+        $product = Product::where('code', $code)->firstOrFail();
+
+        return view('product.show', compact('product'));
+    }
 }
