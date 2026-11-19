@@ -409,7 +409,7 @@
             updateSummary();
         }
 
-        // Jalankan kalkulasi awal saat halaman dimuat
+        // Jalankan kalkulasi awal saat halaman dimuat.
         updateSummary();
     </script>
 </body>
