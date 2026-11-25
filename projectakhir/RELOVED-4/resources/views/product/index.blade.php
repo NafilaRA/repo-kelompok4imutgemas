@@ -66,13 +66,26 @@
                 <div class="flex items-center gap-1.5">
                     @auth
                         <div class="relative">
+                            @php
+                                $user = Auth::user();
+                                $rawHandle = $user?->username ?? $user?->name ?? 'US';
+                                $cleanHandle = preg_replace('/[^A-Za-z0-9]/', '', $rawHandle);
+                                $initials = str_pad(strtoupper(substr($cleanHandle ?: 'US', 0, 2)), 2, 'X');
+                            @endphp
                             <!-- Tombol Avatar / Profil -->
                             <button type="button" onclick="toggleProfileMenu()" class="flex items-center gap-2 pl-2 focus:outline-none">
-                                <span class="text-xs font-extrabold text-stone-800 hidden sm:inline">{{ Auth::user()->name }}</span>
-                                <div class="w-8 h-8 rounded-full overflow-hidden ring-2 ring-pink-300 shadow-sm transition hover:scale-105">
-                                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed={{ Auth::user()->name }}" alt="Profile" class="w-full h-full object-cover">
+                            <span class="text-xs font-extrabold text-stone-800 hidden sm:inline">{{ Auth::user()->name }}</span>
+
+                            @if(Auth::user()?->avatar)
+                                <img src="{{ asset('storage/' . Auth::user()->avatar) }}"
+                                    alt="Avatar"
+                                    class="w-9 h-9 rounded-full object-cover ring-2 ring-pink-300 shadow-sm">
+                            @else
+                                <div class="w-9 h-9 rounded-full bg-gradient-to-br from-[#FF2E93] to-[#FF7EB6] text-white font-extrabold text-xs tracking-wider flex items-center justify-center ring-2 ring-pink-300 shadow-sm select-none">
+                                    {{ $initials }}
                                 </div>
-                            </button>
+                            @endif
+                        </button>
 
                             <!-- Dropdown Menu (Pengaturan Akun & Logout) -->
                             <div id="profileMenu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-2xl shadow-xl border border-pink-100 py-2 z-50">
@@ -378,43 +391,40 @@
     <!-- Bottom Navigation Bar -->
     <nav class="fixed bottom-0 inset-x-0 bg-white/95 backdrop-blur-md border-t border-pink-100 z-50">
         <div class="max-w-xl mx-auto px-4 h-16 flex items-center justify-around">
-            <a href="{{ route('product.index') }}" class="flex flex-col items-center gap-1 text-[#EC4899]">
+            <!-- Belanja -->
+            <a href="{{ route('product.index') }}" class="flex flex-col items-center gap-1 transition {{ request()->routeIs('product.index') ? 'text-[#EC4899]' : 'text-stone-400 hover:text-[#EC4899]' }}">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
                 </svg>
-                <span class="text-[10px] font-bold">Belanja</span>
+                <span class="text-[10px] {{ request()->routeIs('product.index') ? 'font-bold' : 'font-semibold' }}">Belanja</span>
             </a>
 
-            <a href="#katalog-produk" class="flex flex-col items-center gap-1 text-stone-400 hover:text-pink-500 transition">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
-                </svg>
-                <span class="text-[10px] font-semibold">Katalog</span>
-            </a>
-
-            <a href="{{ route('cart.index') }}" class="relative flex flex-col items-center gap-1 text-stone-400 hover:text-pink-500 transition">
+            <!-- Keranjang -->
+            <a href="{{ route('cart.index') }}" class="relative flex flex-col items-center gap-1 transition {{ request()->routeIs('cart.*') ? 'text-[#EC4899]' : 'text-stone-400 hover:text-[#EC4899]' }}">
                 <span class="absolute -top-1.5 right-0 bg-[#EC4899] text-white text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
-                    0
+                    {{ $itemCount ?? 0 }}
                 </span>
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
                 </svg>
-                <span class="text-[10px] font-semibold">Keranjang</span>
+                <span class="text-[10px] {{ request()->routeIs('cart.*') ? 'font-bold' : 'font-semibold' }}">Keranjang</span>
             </a>
 
-            <a href="{{ route('orders.index') }}" class="flex flex-col items-center gap-1 {{ request()->routeIs('orders.*') ? 'text-pink-500' : 'text-stone-400' }} hover:text-pink-500 transition">
+            <!-- Pesanan -->
+            <a href="{{ route('orders.index') }}" class="flex flex-col items-center gap-1 transition {{ request()->routeIs('orders.*') ? 'text-[#EC4899]' : 'text-stone-400 hover:text-[#EC4899]' }}">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z" />
                     <path stroke-linecap="round" stroke-linejoin="round" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0" />
                 </svg>
-                <span class="text-[10px] font-semibold">Pesanan</span>
+                <span class="text-[10px] {{ request()->routeIs('orders.*') ? 'font-bold' : 'font-semibold' }}">Pesanan</span>
             </a>
 
-            <a href="#" class="flex flex-col items-center gap-1 text-stone-400 hover:text-pink-500 transition">
+            <!-- Akun -->
+            <a href="{{ route('profile') }}" class="flex flex-col items-center gap-1 transition {{ request()->routeIs('profile') ? 'text-[#EC4899]' : 'text-stone-400 hover:text-[#EC4899]' }}">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                 </svg>
-                <span class="text-[10px] font-semibold">Akun</span>
+                <span class="text-[10px] {{ request()->routeIs('profile') ? 'font-bold' : 'font-semibold' }}">Akun</span>
             </a>
         </div>
     </nav>
@@ -425,14 +435,12 @@
 
         <!-- Konten Panel Filter -->
         <div class="fixed bottom-0 inset-x-0 bg-[#FFFDFB] rounded-t-3xl border-t border-pink-100 shadow-2xl max-w-4xl mx-auto p-6 sm:p-8 z-10 max-h-[88vh] overflow-y-auto">
-            <form action="{{ route('product.index') }}" method="GET">
-                <!-- Simpan filter kategori & search yang sedang aktif -->
+           <form action="{{ route('product.index') }}" method="GET" class="flex items-center gap-2">
                 @if(request('category'))
                     <input type="hidden" name="category" value="{{ request('category') }}">
                 @endif
-                @if(request('search'))
-                    <input type="hidden" name="search" value="{{ request('search') }}">
-                @endif
+                <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari kaos, sweater, kode RLV..."class="...">
+                <button type="submit" class="...">Cari</button>
 
                 <!-- Header Modal -->
                 <div class="flex items-center justify-between mb-6">

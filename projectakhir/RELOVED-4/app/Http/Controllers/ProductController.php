@@ -81,9 +81,17 @@ class ProductController extends Controller
 
         // 2. Filter Pencarian Teks
         if ($request->filled('search')) {
-            $query->where(function ($q) use ($request) {
-                $q->where('name', 'like', '%' . $request->search . '%')
-                  ->orWhere('code', 'like', '%' . $request->search . '%');
+            $keyword = $request->search;
+
+            $query->where(function ($q) use ($keyword) {
+                $q->where('name', 'like', '%' . $keyword . '%')
+                ->orWhere('code', 'like', '%' . $keyword . '%')
+                ->orWhere('description', 'like', '%' . $keyword . '%')
+                ->orWhere('badge', 'like', '%' . $keyword . '%')
+                ->orWhereHas('category', function ($catQuery) use ($keyword) {
+                    $catQuery->where('name', 'like', '%' . $keyword . '%')
+                            ->orWhere('slug', 'like', '%' . $keyword . '%');
+                });
             });
         }
 

@@ -18,8 +18,10 @@
     <header class="bg-[#FFFDFB]/90 backdrop-blur-md sticky top-0 z-40 border-b border-pink-100/80">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 py-3.5 flex items-center justify-between">
             <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-pink-100 to-rose-200 border border-pink-200 flex items-center justify-center shadow-sm">
-                    <span class="text-pink-600 font-extrabold text-sm">R</span>
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-pink-100 to-rose-200 border border-pink-200 flex items-center justify-center shadow-sm overflow-hidden">
+                <img src="{{ asset('images/icon/logo-reloved.jpeg') }}" 
+                    alt="Logo Reloved" 
+                    class="w-full h-full object-contain scale-125 mix-blend-multiply">
                 </div>
                 <div>
                     <div class="flex items-center gap-2">
@@ -59,10 +61,16 @@
                         <span>Pilih Semua (<span id="total-count-label">{{ $itemCount }}</span> item)</span>
                     </label>
                     @if($itemCount > 0)
-                    <button type="button" onclick="deleteSelected()" class="text-stone-500 hover:text-red-600 flex items-center gap-1 font-medium">
+                    <button type="button" onclick="deleteSelected()" class="text-stone-500 hover:text-red-600 flex items-center gap-1 font-medium cursor-pointer">
                         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
                         Hapus Terpilih
                     </button>
+
+                    <!-- Form tersembunyi untuk mengirim ID item yang dicentang -->
+                    <form id="delete-selected-form" action="{{ route('cart.destroySelected') }}" method="POST" class="hidden">
+                        @csrf
+                        <div id="selected-ids-container"></div>
+                    </form>
                     @endif
                 </div>
 
@@ -247,49 +255,76 @@
     </main>
 
     <!-- Bottom Navigation Bar (Sama persis dengan Halaman Beranda & di Tengah Banget) -->
+    <!-- Bottom Navigation Bar -->
     <nav class="fixed bottom-0 inset-x-0 bg-white/95 backdrop-blur-md border-t border-pink-100 z-50">
         <div class="max-w-xl mx-auto px-4 h-16 flex items-center justify-around">
-            <a href="{{ route('product.index') }}" class="flex flex-col items-center gap-1 text-[#EC4899]">
+            <!-- Belanja -->
+            <a href="{{ route('product.index') }}" class="flex flex-col items-center gap-1 transition {{ request()->routeIs('product.index') ? 'text-[#EC4899]' : 'text-stone-400 hover:text-[#EC4899]' }}">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
                 </svg>
-                <span class="text-[10px] font-bold">Belanja</span>
+                <span class="text-[10px] {{ request()->routeIs('product.index') ? 'font-bold' : 'font-semibold' }}">Belanja</span>
             </a>
 
-            <a href="#katalog-produk" class="flex flex-col items-center gap-1 text-stone-400 hover:text-pink-500 transition">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
-                </svg>
-                <span class="text-[10px] font-semibold">Katalog</span>
-            </a>
-
-            <a href="{{ route('cart.index') }}" class="relative flex flex-col items-center gap-1 text-stone-400 hover:text-pink-500 transition">
+            <!-- Keranjang -->
+            <a href="{{ route('cart.index') }}" class="relative flex flex-col items-center gap-1 transition {{ request()->routeIs('cart.*') ? 'text-[#EC4899]' : 'text-stone-400 hover:text-[#EC4899]' }}">
                 <span class="absolute -top-1.5 right-0 bg-[#EC4899] text-white text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
-                    0
+                    {{ $itemCount ?? 0 }}
                 </span>
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
                 </svg>
-                <span class="text-[10px] font-semibold">Keranjang</span>
+                <span class="text-[10px] {{ request()->routeIs('cart.*') ? 'font-bold' : 'font-semibold' }}">Keranjang</span>
             </a>
 
-            <a href="{{ route('orders.index') }}" class="flex flex-col items-center gap-1 {{ request()->routeIs('orders.*') ? 'text-pink-500' : 'text-stone-400' }} hover:text-pink-500 transition">
+            <!-- Pesanan -->
+            <a href="{{ route('orders.index') }}" class="flex flex-col items-center gap-1 transition {{ request()->routeIs('orders.*') ? 'text-[#EC4899]' : 'text-stone-400 hover:text-[#EC4899]' }}">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z" />
                     <path stroke-linecap="round" stroke-linejoin="round" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0" />
                 </svg>
-                <span class="text-[10px] font-semibold">Pesanan</span>
+                <span class="text-[10px] {{ request()->routeIs('orders.*') ? 'font-bold' : 'font-semibold' }}">Pesanan</span>
             </a>
 
-            <a href="#" class="flex flex-col items-center gap-1 text-stone-400 hover:text-pink-500 transition">
+            <!-- Akun -->
+            <a href="{{ route('profile') }}" class="flex flex-col items-center gap-1 transition {{ request()->routeIs('profile') ? 'text-[#EC4899]' : 'text-stone-400 hover:text-[#EC4899]' }}">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                 </svg>
-                <span class="text-[10px] font-semibold">Akun</span>
+                <span class="text-[10px] {{ request()->routeIs('profile') ? 'font-bold' : 'font-semibold' }}">Akun</span>
             </a>
         </div>
     </nav>
 
+    <!-- Custom Pop-Up Modal Pink -->
+<div id="custom-popup-modal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4 bg-stone-900/35 backdrop-blur-xs transition-opacity duration-200">
+    <div id="custom-popup-card" class="w-full max-w-sm bg-[#FFF9FB] border-2 border-pink-200 rounded-[2rem] p-6 shadow-xl shadow-pink-200/60 text-center transform scale-95 transition-all duration-200">
+        
+        <!-- Ikon Imut di Atas -->
+        <div id="popup-icon-wrap" class="w-14 h-14 mx-auto mb-3.5 rounded-2xl bg-pink-100 border border-pink-200 text-[#EC4899] flex items-center justify-center shadow-xs">
+            <!-- Diisi otomatis lewat JS -->
+        </div>
+
+        <h3 id="popup-title" class="text-base font-extrabold text-stone-900 mb-1">
+            Hapus Item Terpilih?
+        </h3>
+        <p id="popup-message" class="text-xs text-stone-500 leading-relaxed mb-5">
+            Yakin mau hapus item dari keranjang?
+        </p>
+
+        <!-- Tombol Aksi -->
+        <div id="popup-actions" class="flex items-center justify-center gap-2.5">
+            <button type="button" id="popup-cancel-btn" class="flex-1 py-2.5 px-4 rounded-full bg-white hover:bg-pink-50 text-stone-600 border border-pink-200 text-xs font-bold transition cursor-pointer">
+                Batal
+            </button>
+            <button type="button" id="popup-confirm-btn" class="flex-1 py-2.5 px-4 rounded-full bg-gradient-to-r from-pink-400 to-[#EC4899] hover:opacity-95 text-white text-xs font-bold shadow-md shadow-pink-200 transition cursor-pointer">
+                Ya, Hapus
+            </button>
+        </div>
+    </div>
+</div>
+
+    <!-- Script JavaScript Kalkulasi, Checkbox, & Validasi Voucher -->
     <!-- Script JavaScript Kalkulasi, Checkbox, & Validasi Voucher -->
     <script>
         let discountAmount = 0;
@@ -320,15 +355,14 @@
             const activeShipping = selectedCount > 0 ? shippingCostPerItem : 0;
             const grandTotal = Math.max(0, subtotal - discountAmount + activeShipping);
 
-            // Update teks di layar
             document.getElementById('summary-count').innerText = selectedCount;
-            if(document.getElementById('btn-count')) document.getElementById('btn-count').innerText = selectedCount;
-            if(document.getElementById('eco-item-count')) document.getElementById('eco-item-count').innerText = selectedCount;
-            if(document.getElementById('eco-carbon')) document.getElementById('eco-carbon').innerText = `-${(selectedCount * 0.8).toFixed(1)} kg jejak karbon`;
-            
+            if (document.getElementById('btn-count')) document.getElementById('btn-count').innerText = selectedCount;
+            if (document.getElementById('eco-item-count')) document.getElementById('eco-item-count').innerText = selectedCount;
+            if (document.getElementById('eco-carbon')) document.getElementById('eco-carbon').innerText = `-${(selectedCount * 0.8).toFixed(1)} kg jejak karbon`;
+
             document.getElementById('subtotal-text').innerText = formatRupiah(subtotal);
             document.getElementById('shipping-text').innerText = formatRupiah(activeShipping);
-            
+
             const discountRow = document.getElementById('discount-row');
             if (discountAmount > 0) {
                 discountRow.classList.remove('hidden');
@@ -340,21 +374,18 @@
             document.getElementById('grand-total-text').innerText = formatRupiah(grandTotal);
         }
 
-        // Event Checkbox Pilih Semua
         const selectAllCb = document.getElementById('select-all');
-        if(selectAllCb) {
+        if (selectAllCb) {
             selectAllCb.addEventListener('change', function() {
                 document.querySelectorAll('.item-checkbox').forEach(cb => cb.checked = this.checked);
                 updateSummary();
             });
         }
 
-        // Event Checkbox Per Item
         document.querySelectorAll('.item-checkbox').forEach(cb => {
             cb.addEventListener('change', updateSummary);
         });
 
-        // Fungsi Pilih Voucher dari List
         function selectVoucher(code, amount) {
             document.getElementById('voucher-input').value = code;
             discountAmount = amount;
@@ -362,7 +393,6 @@
             updateSummary();
         }
 
-        // Fungsi Ketik Voucher Manual (Validasi)
         function applyManualVoucher() {
             const code = document.getElementById('voucher-input').value.trim().toUpperCase();
             if (validVouchers.hasOwnProperty(code)) {
@@ -409,7 +439,103 @@
             updateSummary();
         }
 
-        // Jalankan kalkulasi awal saat halaman dimuat.
+        function openPinkPopup({ title, message, type = 'confirm', confirmText = 'Ya, Hapus', onConfirm = null }) {
+            const modal = document.getElementById('custom-popup-modal');
+            const card = document.getElementById('custom-popup-card');
+            const iconWrap = document.getElementById('popup-icon-wrap');
+            const titleEl = document.getElementById('popup-title');
+            const msgEl = document.getElementById('popup-message');
+            const cancelBtn = document.getElementById('popup-cancel-btn');
+            const confirmBtn = document.getElementById('popup-confirm-btn');
+
+            titleEl.innerText = title;
+            msgEl.innerText = message;
+            confirmBtn.innerText = confirmText;
+
+            if (type === 'alert') {
+                cancelBtn.classList.add('hidden');
+                iconWrap.innerHTML = `
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                    </svg>
+                `;
+            } else {
+                cancelBtn.classList.remove('hidden');
+                iconWrap.innerHTML = `
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                    </svg>
+                `;
+            }
+
+            function closePopup() {
+                card.classList.remove('scale-100');
+                card.classList.add('scale-95');
+                setTimeout(() => {
+                    modal.classList.add('hidden');
+                    modal.classList.remove('flex');
+                }, 150);
+            }
+
+            cancelBtn.onclick = closePopup;
+            modal.onclick = (e) => {
+                if (e.target === modal) closePopup();
+            };
+
+            confirmBtn.onclick = () => {
+                closePopup();
+                if (typeof onConfirm === 'function') onConfirm();
+            };
+
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            requestAnimationFrame(() => {
+                card.classList.remove('scale-95');
+                card.classList.add('scale-100');
+            });
+        }
+
+        function deleteSelected() {
+            const selectedIds = [];
+            document.querySelectorAll('.cart-item').forEach(item => {
+                const checkbox = item.querySelector('.item-checkbox');
+                if (checkbox && checkbox.checked) {
+                    selectedIds.push(item.dataset.id);
+                }
+            });
+
+            if (selectedIds.length === 0) {
+                openPinkPopup({
+                    title: 'Belum Ada yang Dipilih',
+                    message: 'Centang dulu minimal 1 barang di keranjang yang mau dihapus ya!',
+                    type: 'alert',
+                    confirmText: 'Oke, Mengerti'
+                });
+                return;
+            }
+
+            openPinkPopup({
+                title: 'Hapus Item Terpilih?',
+                message: `Yakin mau hapus ${selectedIds.length} item terpilih dari keranjang?`,
+                type: 'confirm',
+                confirmText: 'Ya, Hapus',
+                onConfirm: () => {
+                    const container = document.getElementById('selected-ids-container');
+                    container.innerHTML = '';
+
+                    selectedIds.forEach(id => {
+                        const input = document.createElement('input');
+                        input.type = 'hidden';
+                        input.name = 'ids[]';
+                        input.value = id;
+                        container.appendChild(input);
+                    });
+
+                    document.getElementById('delete-selected-form').submit();
+                }
+            });
+        }
+
         updateSummary();
     </script>
 </body>

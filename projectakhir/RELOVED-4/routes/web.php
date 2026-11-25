@@ -7,12 +7,12 @@ use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\OrderController;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
 // Halaman utama menampilkan daftar produk thrifting
-Route::get('/product', [ProductController::class, 'index'])->name('product.index');
+Route::get('/', [ProductController::class, 'index'])->name('product.index');
 // Rute khusus Penjual / Admin
 Route::get('/product/create', [ProductController::class, 'create'])->name('product.create');
 Route::post('/product', [ProductController::class, 'store'])->name('product.store');
@@ -43,6 +43,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', function () {
         return view('profile');
     })->name('profile');
+    Route::put('/profile', [\App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
 
     // Keranjang Belanja
     Route::get('/keranjang', [CartController::class, 'index'])->name('cart.index');

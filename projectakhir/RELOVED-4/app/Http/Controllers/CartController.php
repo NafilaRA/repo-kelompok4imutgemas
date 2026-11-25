@@ -46,10 +46,15 @@ class CartController extends Controller
     }
 
     public function destroySelected(Request $request)
-    {
-        $ids = $request->input('selected_ids', []);
-        Cart::where('user_id', Auth::id())->whereIn('id', $ids)->delete();
-        
-        return response()->json(['status' => 'success']);
+{
+    $ids = $request->input('ids', []);
+
+    if (!empty($ids)) {
+        Cart::where('user_id', Auth::id())
+            ->whereIn('id', $ids)
+            ->delete();
     }
+
+    return redirect()->route('cart.index')->with('success', 'Item terpilih berhasil dihapus!');
+}
 }
