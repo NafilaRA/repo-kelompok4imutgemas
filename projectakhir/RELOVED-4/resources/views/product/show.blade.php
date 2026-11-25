@@ -3,93 +3,102 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ $product->name }} - Reloved</title>
+    <title>{{ $product->name ?? 'Vintage Graphic Tee White' }} - Reloved</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #FFF9FB; }
+        .font-serif-title { font-family: 'Playfair Display', serif; }
+    </style>
 </head>
-<body class="bg-stone-50 text-stone-800 font-sans">
+<body class="text-stone-800 min-h-screen">
 
-    <!-- Navbar -->
-    <nav class="bg-white border-b border-stone-200">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-            <a href="{{ route('product.index') }}" class="text-2xl font-bold tracking-tight text-emerald-800">
-                RELOVED<span class="text-amber-600">.</span>
+    <!-- Top Header -->
+    <header class="bg-white border-b border-pink-100 sticky top-0 z-30">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
+            <a href="{{ route('product.index') }}" class="text-lg font-extrabold tracking-tight text-stone-900">
+                Reloved
             </a>
-            <a href="{{ route('product.index') }}" class="text-sm font-medium text-stone-600 hover:text-emerald-800">
-                &larr; Kembali ke Katalog
+
+            <!-- Kembali ke Katalog dengan Ikon Rumah -->
+            <a href="{{ route('product.index') }}" class="inline-flex items-center gap-1.5 text-xs font-bold text-[#EC4899] hover:text-pink-600 bg-pink-50 hover:bg-pink-100 border border-pink-200 px-3.5 py-2 rounded-full transition">
+                <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                </svg>
+                <span>Kembali ke Katalog</span>
             </a>
         </div>
-    </nav>
+    </header>
 
-    <!-- Detail Produk -->
-    <main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-        <div class="bg-white rounded-2xl border border-stone-200 overflow-hidden grid grid-cols-1 md:grid-cols-2">
+    <!-- Main Content -->
+    <main class="max-w-5xl mx-auto px-4 sm:px-6 py-8">
+        <div class="bg-white rounded-3xl border border-pink-100 shadow-sm p-6 sm:p-8 grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
             
-            <!-- Foto Produk -->
-            <div class="bg-stone-200 aspect-[4/5] md:aspect-auto">
-                <img src="{{ asset($product->image) }}" 
-                     alt="{{ $product->name }}"
-                     onerror="this.src='https://placehold.co/600x750/e7e5e4/57534e?text={{ $product->code }}'"
-                     class="w-full h-full object-cover">
+            <!-- Gambar Produk -->
+            <div class="rounded-2xl bg-pink-50/60 border border-pink-100 p-4 flex items-center justify-center aspect-square overflow-hidden">
+                <img src="{{ asset($product->image ?? '') }}" alt="{{ $product->name ?? 'Produk' }}" onerror="this.src='https://placehold.co/500x500/fce7f3/db2777?text=Reloved'" class="w-full h-full object-contain rounded-xl">
             </div>
 
-            <!-- Informasi Lengkap -->
-            <div class="p-6 md:p-8 flex flex-col justify-between">
+            <!-- Detail Produk -->
+            <div class="space-y-5">
+                <div class="flex items-center gap-2 text-xs">
+                    <span class="bg-pink-100 text-[#DB2777] font-bold px-3 py-1 rounded-full">
+                        {{ $product->category->name ?? 'Kaos' }}
+                    </span>
+                    <span class="text-stone-400 font-medium">
+                        Kode: {{ $product->code ?? $product->sku ?? 'RLV-002' }}
+                    </span>
+                </div>
+
                 <div>
-                    <div class="flex items-center gap-2 mb-3">
-                        <span class="bg-emerald-100 text-emerald-800 text-xs font-semibold px-2.5 py-0.5 rounded">
-                            {{ $product->category->name }}
+                    <h1 class="text-2xl sm:text-3xl font-extrabold text-stone-900">
+                        {{ $product->name ?? 'Vintage Graphic Tee White' }}
+                    </h1>
+                    <div class="flex items-baseline gap-3 mt-2">
+                        <span class="text-2xl font-extrabold text-[#EC4899]">
+                            Rp {{ number_format($product->price ?? 45000, 0, ',', '.') }}
                         </span>
-                        <span class="text-xs text-stone-400">Kode: {{ $product->code }}</span>
-                    </div>
-
-                    <h1 class="text-2xl md:text-3xl font-bold text-stone-900 mb-3">{{ $product->name }}</h1>
-
-                    <!-- Harga -->
-                    <div class="flex items-baseline gap-3 mb-6">
-                        <span class="text-2xl font-bold text-emerald-800">
-                            Rp {{ number_format($product->price, 0, ',', '.') }}
-                        </span>
-                        @if ($product->original_price)
+                        @if(!empty($product->original_price))
                             <span class="text-sm text-stone-400 line-through">
                                 Rp {{ number_format($product->original_price, 0, ',', '.') }}
                             </span>
+                        @else
+                            <span class="text-sm text-stone-400 line-through">Rp 55.000</span>
                         @endif
                     </div>
+                </div>
 
-                    <!-- Spesifikasi Thrift -->
-                    <div class="border-y border-stone-200 py-4 space-y-2.5 text-sm mb-6">
-                        <div class="flex justify-between">
-                            <span class="text-stone-500">Ukuran (Size)</span>
-                            <span class="font-semibold">{{ $product->size->name }} ({{ $product->size->chest_width_range ?? '-' }})</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span class="text-stone-500">Kondisi Fisik</span>
-                            <span class="font-semibold text-emerald-700">{{ $product->condition }}</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span class="text-stone-500">Stok Tersedia</span>
-                            <span class="font-semibold">{{ $product->stock }} pcs</span>
-                        </div>
+                <div class="border-t border-b border-pink-100 py-4 space-y-2.5 text-xs sm:text-sm">
+                    <div class="flex justify-between">
+                        <span class="text-stone-500">Ukuran (Size)</span>
+                        <span class="font-bold text-stone-900">{{ $product->size->name ?? 'M (-)' }}</span>
                     </div>
-
-                    <!-- Deskripsi -->
-                    <div class="mb-8">
-                        <h3 class="text-sm font-semibold text-stone-700 mb-1">Deskripsi Produk</h3>
-                        <p class="text-sm text-stone-600 leading-relaxed">{{ $product->description }}</p>
+                    <div class="flex justify-between">
+                        <span class="text-stone-500">Kondisi Fisik</span>
+                        <span class="font-bold text-[#EC4899]">{{ $product->condition ?? '9.5/10' }}</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-stone-500">Stok Tersedia</span>
+                        <span class="font-bold text-stone-900">{{ $product->stock ?? 9 }} pcs</span>
                     </div>
                 </div>
 
-                <!-- Tombol Beli / Keranjang -->
-                <div class="space-y-3">
-                    <form action="{{ route('cart.store', $product->id) }}" method="POST" class="w-full">
-                        @csrf
-                        <button type="submit" 
-                                class="w-full bg-[#0F4C3A] hover:bg-[#0b382a] text-white font-semibold py-3 px-6 rounded-lg transition cursor-pointer">
-                            + Tambah ke Keranjang
-                        </button>
-                    </form>
+                <div class="space-y-1.5">
+                    <h2 class="text-xs font-bold uppercase tracking-wider text-stone-500">Deskripsi Produk</h2>
+                    <p class="text-sm text-stone-600 leading-relaxed">
+                        {{ $product->description ?? 'Kaos vintage warna putih bersih, bahan cotton combed adem.' }}
+                    </p>
                 </div>
+
+                <!-- Tombol Tambah ke Keranjang (Pink) -->
+                <form action="{{ route('cart.store', $product->id ?? 1) }}" method="POST" class="pt-2">
+                    @csrf
+                    <button type="submit" class="w-full bg-gradient-to-r from-pink-500 to-[#EC4899] hover:from-pink-600 hover:to-pink-700 text-white font-bold text-sm py-3.5 px-6 rounded-2xl shadow-md shadow-pink-200 transition flex items-center justify-center gap-2">
+                        <span>+ Tambah ke Keranjang</span>
+                    </button>
+                </form>
             </div>
+
         </div>
     </main>
 

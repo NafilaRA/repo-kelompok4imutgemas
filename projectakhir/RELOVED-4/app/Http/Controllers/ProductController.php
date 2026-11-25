@@ -6,9 +6,65 @@ use App\Models\Category;
 use App\Models\Product;
 use App\Models\Size;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class ProductController extends Controller
 {
+    public function create()
+    {
+        if (auth()->user()?->role !== 'penjual') {
+            abort(403, 'Halaman ini khusus penjual.');
+        }
+
+        $categories = Category::all();
+        $sizes = Size::all();
+
+        return view('product.create', compact('categories', 'sizes'));
+    }
+
+    public function store(Request $request)
+    {
+        if (auth()->user()?->role !== 'penjual') {
+            abort(403, 'Halaman ini khusus penjual.');
+        }
+
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'price' => 'required|numeric|min:0',
+            'condition' => 'nullable|string|max:100',
+            'badge' => 'nullable|string|max:100',
+            'category_id' => 'nullable|exists:categories,id',
+            'size_id' => 'nullable|exists:sizes,id',
+            'description' => 'nullable|string',
+            'image' => 'nullable|image|max:2048',
+        ]);
+
+        $imagePath = null;
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
+            $filename = time() . '_' . Str::slug($request->name) . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('images/products'), $filename);
+            $imagePath = 'images/products/' . $filename;
+        }
+
+        $code = 'RLV-' . strtoupper(Str::random(5));
+
+        Product::create([
+            'code' => $code,
+            'name' => $validated['name'],
+            'price' => $validated['price'],
+            'condition' => $validated['condition'] ?? null,
+            'badge' => $validated['badge'] ?? null,
+            'category_id' => $validated['category_id'] ?? null,
+            'size_id' => $validated['size_id'] ?? null,
+            'description' => $validated['description'] ?? null,
+            'image' => $imagePath,
+            'status' => 'available',
+        ]);
+
+        return redirect()->route('product.index')->with('success', 'Produk berhasil ditambahkan!');
+    }
+
     public function index(Request $request)
     {
         $categories = Category::all();
@@ -46,7 +102,7 @@ class ProductController extends Controller
             });
         }
 
-      // 5. Filter Standar Kondisi Vintage
+        // 5. Filter Standar Kondisi Vintage
         if ($request->filled('condition')) {
             if ($request->condition === 'like_new') {
                 $query->where('badge', 'Like New');
@@ -66,9 +122,9 @@ class ProductController extends Controller
         return view('product.index', compact('products', 'categories', 'sizes'));
     }
 
+
     public function show($code)
     {
-        // Cari produk berdasarkan kode (misal: RLV-002) atau tampilkan halaman detail
         $product = Product::where('code', $code)->firstOrFail();
 
         return view('product.show', compact('product'));

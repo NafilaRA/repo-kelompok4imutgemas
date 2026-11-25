@@ -45,12 +45,22 @@
 
             <!-- Right Actions (Wishlist & Tombol Login/Sign Up / Profil Dropdown) -->
             <div class="flex items-center gap-2.5">
+                <!-- Tombol Tambah Produk: HANYA muncul jika login sebagai penjual -->
+    @if(auth()->check() && auth()->user()->role === 'penjual')
+        <a href="{{ route('product.create') }}" class="inline-flex items-center gap-1.5 bg-[#EC4899] hover:bg-pink-600 text-white text-xs font-bold px-3.5 py-2.5 rounded-full shadow-sm transition">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+            </svg>
+            <span>Tambah Produk</span>
+        </a>
+    @endif
                 <!-- Tombol Wishlist -->
                 <button type="button" class="w-9 h-9 rounded-full bg-white border border-pink-100 flex items-center justify-center text-stone-600 hover:text-pink-500 hover:border-pink-300 transition shadow-sm">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                     </svg>
                 </button>
+                
 
                 <!-- Tombol Login/Sign Up atau Profil User dengan Dropdown -->
                 <div class="flex items-center gap-1.5">
@@ -267,7 +277,7 @@
         @if($products->isEmpty())
             <div class="bg-white rounded-3xl border border-pink-100 p-12 text-center shadow-sm">
                 <p class="text-stone-500 text-sm mb-3">Yah, baju yang kamu cari belum ketemu atau sudah sold out~</p>
-                <a href="{{ route('products.index') }}" class="inline-block bg-[#EC4899] text-white text-xs font-bold px-5 py-2.5 rounded-full hover:bg-pink-600 transition">
+                <a href="{{ route('product.index') }}" class="inline-block bg-[#EC4899] text-white text-xs font-bold px-5 py-2.5 rounded-full hover:bg-pink-600 transition">
                     Lihat Semua Koleksi
                 </a>
             </div>
@@ -278,6 +288,13 @@
                         <div>
                             <!-- Product Image Wrapper -->
                             <div class="relative aspect-[4/5] bg-stone-100 overflow-hidden">
+
+                                <a href="{{ route('product.show', $product->code) }}" class="block w-full h-full">
+                        <img src="{{ $product->image ? asset($product->image) : asset('images/placeholder.png') }}"
+                             alt="{{ $product->name }}"
+                             onerror="this.onerror=null;this.src='https://placehold.co/400x500/fdf2f8/831843?text=Reloved';"
+                             class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+                    </a>
                                 <!-- KODE BARU (Langsung memasukkan produk ke keranjang) -->
                                 <form action="{{ route('cart.store', $product->id) }}" method="POST" class="inline">
                                     @csrf
@@ -565,6 +582,7 @@
         document.getElementById('filterModal').classList.add('hidden');
         document.body.style.overflow = 'auto';
     }
+    
 </script>
 
 
