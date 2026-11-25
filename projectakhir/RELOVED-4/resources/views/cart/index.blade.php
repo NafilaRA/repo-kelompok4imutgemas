@@ -249,31 +249,31 @@
     <!-- Bottom Navigation Bar (Sama persis dengan Halaman Beranda & di Tengah Banget) -->
     <nav class="fixed bottom-0 inset-x-0 bg-white/95 backdrop-blur-md border-t border-pink-100 z-50">
         <div class="max-w-xl mx-auto px-4 h-16 flex items-center justify-around">
-            <a href="{{ route('product.index') }}" class="flex flex-col items-center gap-1 text-stone-400 hover:text-pink-500 transition">
+            <a href="{{ route('product.index') }}" class="flex flex-col items-center gap-1 text-[#EC4899]">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
                 </svg>
-                <span class="text-[10px] font-semibold">Belanja</span>
+                <span class="text-[10px] font-bold">Belanja</span>
             </a>
 
-            <a href="{{ route('product.index') }}#katalog-produk" class="flex flex-col items-center gap-1 text-stone-400 hover:text-pink-500 transition">
+            <a href="#katalog-produk" class="flex flex-col items-center gap-1 text-stone-400 hover:text-pink-500 transition">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
                 </svg>
                 <span class="text-[10px] font-semibold">Katalog</span>
             </a>
 
-            <a href="{{ route('cart.index') }}" class="relative flex flex-col items-center gap-1 text-[#EC4899]">
+            <a href="{{ route('cart.index') }}" class="relative flex flex-col items-center gap-1 text-stone-400 hover:text-pink-500 transition">
                 <span class="absolute -top-1.5 right-0 bg-[#EC4899] text-white text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
-                    {{ $itemCount }}
+                    0
                 </span>
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
                 </svg>
-                <span class="text-[10px] font-bold">Keranjang</span>
+                <span class="text-[10px] font-semibold">Keranjang</span>
             </a>
 
-            <a href="#" class="flex flex-col items-center gap-1 text-stone-400 hover:text-pink-500 transition">
+            <a href="{{ route('orders.index') }}" class="flex flex-col items-center gap-1 {{ request()->routeIs('orders.*') ? 'text-pink-500' : 'text-stone-400' }} hover:text-pink-500 transition">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z" />
                     <path stroke-linecap="round" stroke-linejoin="round" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0" />

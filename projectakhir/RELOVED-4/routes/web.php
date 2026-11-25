@@ -5,6 +5,15 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
+<<<<<<< HEAD
+=======
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\OrderController;
+
+Route::get('/', function () {
+    return view('welcome');
+});
+>>>>>>> a04ed887a69b58bf70cabfca63bcc0b0e3a1fbca
 
 // Halaman utama menampilkan daftar produk thrifting
 Route::get('/product', [ProductController::class, 'index'])->name('product.index');
@@ -44,6 +53,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/keranjang/tambah/{product}', [CartController::class, 'store'])->name('cart.store');
     Route::delete('/keranjang/{cart}', [CartController::class, 'destroy'])->name('cart.destroy');
     Route::post('/keranjang/hapus-terpilih', [CartController::class, 'destroySelected'])->name('cart.destroySelected');
+<<<<<<< HEAD
 
     // Checkout QRIS
     Route::get('/checkout/qris', function () {
@@ -51,3 +61,14 @@ Route::middleware('auth')->group(function () {
     })->name('checkout.qris');
 });
 
+=======
+});
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+    Route::post('/checkout', [OrderController::class, 'checkout'])->name('orders.checkout');
+    Route::get('/orders/{id}', [OrderController::class, 'show'])->name('orders.show');
+    Route::post('/orders/{id}/payment-proof', [OrderController::class, 'uploadProof'])->name('orders.uploadProof');
+    Route::patch('/orders/{id}/complete', [OrderController::class, 'complete'])->name('orders.complete');
+});
+>>>>>>> a04ed887a69b58bf70cabfca63bcc0b0e3a1fbca

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class OrderItem extends Model
@@ -11,7 +12,7 @@ class OrderItem extends Model
     protected $fillable = [
         'order_id',
         'product_id',
-        'quantity',
+        // 'quantity', // aktifkan hanya jika kolom 'quantity' benar-benar ada di tabel order_items
         'price', // Harga produk saat dibeli
     ];
 
