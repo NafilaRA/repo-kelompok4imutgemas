@@ -5,15 +5,12 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
-<<<<<<< HEAD
-=======
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
 
 Route::get('/', function () {
     return view('welcome');
 });
->>>>>>> a04ed887a69b58bf70cabfca63bcc0b0e3a1fbca
 
 // Halaman utama menampilkan daftar produk thrifting
 Route::get('/product', [ProductController::class, 'index'])->name('product.index');
