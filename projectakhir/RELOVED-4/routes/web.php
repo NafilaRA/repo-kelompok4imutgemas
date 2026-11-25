@@ -5,7 +5,6 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
 
 Route::get('/', function () {
@@ -50,15 +49,11 @@ Route::middleware('auth')->group(function () {
     Route::post('/keranjang/tambah/{product}', [CartController::class, 'store'])->name('cart.store');
     Route::delete('/keranjang/{cart}', [CartController::class, 'destroy'])->name('cart.destroy');
     Route::post('/keranjang/hapus-terpilih', [CartController::class, 'destroySelected'])->name('cart.destroySelected');
-<<<<<<< HEAD
 
     // Checkout QRIS
     Route::get('/checkout/qris', function () {
         return view('checkout.qris');
     })->name('checkout.qris');
-});
-
-=======
 });
 
 Route::middleware(['auth'])->group(function () {
@@ -68,4 +63,3 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/orders/{id}/payment-proof', [OrderController::class, 'uploadProof'])->name('orders.uploadProof');
     Route::patch('/orders/{id}/complete', [OrderController::class, 'complete'])->name('orders.complete');
 });
->>>>>>> a04ed887a69b58bf70cabfca63bcc0b0e3a1fbca
